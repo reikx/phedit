@@ -1,0 +1,26 @@
+<html>
+<head>
+    <link rel="stylesheet" href="./index.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.2.1/exif.min.js"></script>
+    <script type="text/javascript" src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="display-wrapper">
+    <div id="image-wrapper">
+        <canvas id="preview"></canvas>
+        <canvas id="output"></canvas>
+    </div>
+    <div id="selector-wrapper">
+        <div class="parameter-wrapper">
+            <span>Title :</span>
+            <input type="text" id="title-input"/>
+        </div>
+        <div class="io-wrapper">
+            <label id="load-button-wrapper"><input type="file" id="load-button" style="display:none;"><span>Load</span></label>
+            <div id="save-button-wrapper"><span>Save</span></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./index.js"></script>
+</div>
+</body>
+</html>
