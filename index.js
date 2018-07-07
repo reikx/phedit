@@ -41,6 +41,9 @@ $('#save-button-wrapper').click(function(event){
             download: $('#title-input').val() + ' - ' + date + '.png'
         })[0].click();
     });
+
+    $('#output').attr('width',0);
+    $('#output').attr('height',0);
 });
 
 $('#load-button').change(function(event){
