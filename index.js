@@ -64,7 +64,7 @@ $('#save-button-wrapper').click(function(event){
     ctx.shadowColor = "rgb(40,40,40)";
     ctx.shadowOffsetX = imgw / 200;
     ctx.shadowOffsetY = imgw / 200;
-    ctx.shadowBlur = imgw / 300;
+    ctx.shadowBlur = imgw / 150;
 
     ctx.textAlign = "right";
     ctx.font = (imgw / 20) + "px 'Noto Sans CJK'";
@@ -174,7 +174,7 @@ setInterval(function(){
         canvas.rotate(-Math.PI / 2);
     }
 
-    canvas.shadowBlur = pw / 300;
+    canvas.shadowBlur = pw / 150;
 
     if(orientation === 5||orientation === 6||orientation === 7||orientation === 8) {
         canvas.drawImage(loadedImage,-ph / 2,-pw / 2,ph,pw);
