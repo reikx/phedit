@@ -4,6 +4,7 @@ let file;
 let reader;
 let date = "";
 let px = 0,py = 0,pw = 0,ph = 0;
+let orientation = 0;
 
 function isLoaded(){
     return loadedImage.src;
@@ -12,25 +13,69 @@ function isLoaded(){
 
 
 $('#save-button-wrapper').click(function(event){
-    $('#output').attr('width',loadedImage.width);
-    $('#output').attr('height',loadedImage.height);
     let ctx = $('#output').get(0).getContext('2d');
-    ctx.drawImage(loadedImage,0,0,loadedImage.width,loadedImage.height);
+
+    let imgw,imgh;
+
+    if(orientation === 5||orientation === 6||orientation === 7||orientation === 8){
+        imgw = loadedImage.height;
+        imgh = loadedImage.width;
+    }
+    else{
+        imgw = loadedImage.width;
+        imgh = loadedImage.height;
+    }
+
+    $('#output').attr('width',imgw);
+    $('#output').attr('height',imgh);
+
+    ctx.translate(imgw / 2,imgh / 2);
+
+    if(orientation === 2){
+        ctx.scale(-1,1);
+    }
+    else if(orientation === 3){
+        ctx.rotate(Math.PI);
+    }
+    else if(orientation === 4){
+        ctx.rotate(Math.PI);
+        ctx.scale(-1,1);
+    }
+    else if(orientation === 5){
+        ctx.rotate(Math.PI / 2);
+        ctx.scale(-1,1);
+    }
+    else if(orientation === 6){
+        ctx.rotate(Math.PI / 2);
+    }
+    else if(orientation === 7){
+        ctx.rotate(-Math.PI / 2);
+        ctx.scale(-1,1);
+    }
+    else if(orientation === 8){
+        ctx.rotate(-Math.PI / 2);
+    }
+
+    ctx.drawImage(loadedImage,-loadedImage.width / 2,-loadedImage.height / 2,loadedImage.width,loadedImage.height);
+
+    ctx.setTransform(1,0,0,1,0,0);
+
+
     ctx.shadowColor = "rgb(40,40,40)";
-    ctx.shadowOffsetX = loadedImage.height / 200;
-    ctx.shadowOffsetY = loadedImage.height / 200;
-    ctx.shadowBlur = loadedImage.height / 100;
+    ctx.shadowOffsetX = imgw / 200;
+    ctx.shadowOffsetY = imgw / 200;
+    ctx.shadowBlur = imgw / 300;
 
     ctx.textAlign = "right";
-    ctx.font = (loadedImage.height / 20) + "px 'Noto Sans CJK'";
+    ctx.font = (imgw / 20) + "px 'Noto Sans CJK'";
     ctx.fillStyle = "rgb(225,225,225)";
 
-    let d = loadedImage.height / 50;
+    let d = imgw / 50;
 
-    ctx.fillText(date,loadedImage.width - d,loadedImage.height - d);
+    ctx.fillText(date,imgw - d,imgh - d);
 
     ctx.textAlign = "left";
-    ctx.fillText($('#title-input').val(),d,loadedImage.height - d);
+    ctx.fillText($('#title-input').val(),d,imgh - d);
 
 
 
@@ -56,6 +101,8 @@ $('#load-button').change(function(event){
         date = date.split(" ")[0];
         date = date.replace(':','/');
         date = date.replace(':','/');
+        orientation = EXIF.getTag(this,"Orientation");
+
     });
 });
 
@@ -67,39 +114,83 @@ setInterval(function(){
     $('#preview').attr('height',cheight);
     $('#preview').attr('style','width:' + cwidth / 2 +';height:' + cheight / 2 + ";");
     let a1 = cheight / cwidth;
-    let a2 = loadedImage.height / loadedImage.width;
+    let a2;
    // console.log(a1,a2);
 
     canvas.shadowColor = "rgb(40,40,40)";
     canvas.shadowOffsetX = 3;
     canvas.shadowOffsetY = 3;
 
+    let imgw,imgh;
+
+    if(orientation === 5||orientation === 6||orientation === 7||orientation === 8){
+        imgw = loadedImage.height;
+        imgh = loadedImage.width;
+    }
+    else{
+        imgw = loadedImage.width;
+        imgh = loadedImage.height;
+    }
+    a2  = imgh / imgw;
+
     if(a1 > a2){
-        let h = loadedImage.height * (cwidth / loadedImage.width);
+        let h = imgh * (cwidth / imgw);
         px = 0;
         py = (cheight - h) / 2;
         pw = cwidth;
         ph = h;
     }
     else{
-        let w = loadedImage.width * (cheight / loadedImage.height);
+        let w = imgw * (cheight / imgh);
         px = (cwidth - w) / 2;
         py = 0;
         pw = w;
         ph = cheight;
     }
+    canvas.translate(px + pw / 2,py + ph / 2);
+
+    if(orientation === 2){
+        canvas.scale(-1,1);
+    }
+    else if(orientation === 3){
+        canvas.rotate(Math.PI);
+    }
+    else if(orientation === 4){
+        canvas.rotate(Math.PI);
+        canvas.scale(-1,1);
+    }
+    else if(orientation === 5){
+        canvas.rotate(Math.PI / 2);
+        canvas.scale(-1,1);
+    }
+    else if(orientation === 6){
+        canvas.rotate(Math.PI / 2);
+    }
+    else if(orientation === 7){
+        canvas.rotate(-Math.PI / 2);
+        canvas.scale(-1,1);
+    }
+    else if(orientation === 8){
+        canvas.rotate(-Math.PI / 2);
+    }
+
+    canvas.shadowBlur = pw / 100;
+
+    if(orientation === 5||orientation === 6||orientation === 7||orientation === 8) {
+        canvas.drawImage(loadedImage,-ph / 2,-pw / 2,ph,pw);
+    }
+    else{
+        canvas.drawImage(loadedImage,-pw / 2,-ph / 2,pw,ph);
+    }
+
+    canvas.setTransform(1,0,0,1,0,0);
 
 
-
-    canvas.shadowBlur = ph / 100;
-
-
-    canvas.drawImage(loadedImage,px,py,pw,ph);
     canvas.textAlign = "right";
-    canvas.font = (ph / 20) + "px 'Noto Sans CJK'";
+    canvas.font = (pw / 20) + "px 'Noto Sans CJK'";
     canvas.fillStyle = "rgb(225,225,225)";
 
-    let d = ph / 50;
+    let d = pw / 300;
 
     canvas.fillText(date,px + pw - d,py + ph - d);
 
