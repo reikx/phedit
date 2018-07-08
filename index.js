@@ -174,7 +174,7 @@ setInterval(function(){
         canvas.rotate(-Math.PI / 2);
     }
 
-    canvas.shadowBlur = pw / 100;
+    canvas.shadowBlur = pw / 300;
 
     if(orientation === 5||orientation === 6||orientation === 7||orientation === 8) {
         canvas.drawImage(loadedImage,-ph / 2,-pw / 2,ph,pw);
@@ -190,7 +190,7 @@ setInterval(function(){
     canvas.font = (pw / 20) + "px 'Noto Sans CJK'";
     canvas.fillStyle = "rgb(225,225,225)";
 
-    let d = pw / 300;
+    let d = pw / 50;
 
     canvas.fillText(date,px + pw - d,py + ph - d);
 
